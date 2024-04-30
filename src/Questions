@@ -1,0 +1,29 @@
+1 - taskType'ların yanındaki sayılar neyi belirtiyor (süre mi, iş boyutu mu)?
+2 - taskType'ların
+3 - Bu jobTypeları kendimiz mi giricez?
+4 - jobType'ların yanındaki sayı neyi belirtiyor (taskType'da belirtilen parametreden farkı ne) ?
+5 - Station'lardaki Task'lari kendimiz mi yazıyoruz?
+6 - Station'lardaki yanındaki sayı işlem kapasitesini mi belirtiyor?
+7 - Station MULTIFLAG FIFOFLAG program kendisi mi kara veriyor, yoksa biz mi seçiyoruz?
+8 - Biz seçiyorsak neye göre seçiyoruz(kafamıza göre mi)?
+9 - Bu parametreleri .txt dosyası içerisinden mi çekeceğiz, command line'a teker teker parametre olarak mı giricez, yoksa Scanner ile mi çekecez?
+10 - Bu işlemlerin ilerlediğini yüzdelik olarak mı belirticez
+
+
+
+(TASKTYPES
+    (tasktypeID1 defaultSize) (tasktypeID2 defaultSize) ...
+)
+(JOBTYPES
+    (jobtypeID1 tasktypeID1 [size] tasktypeID2 [size] ...)
+    (jobtypeID2 tasktypeID1 [size] tasktypeID3 [size] ...)
+    ...
+)
+(STATIONS
+    (StationID1 maxCapacity MULTIFLAG FIFOFLAG
+        (tasktype1 speed [plusMinus]) (tasktype2 speed [plusMinus]) ...
+    )
+    (StationID2 maxCapacity MULTIFLAG FIFOFLAG
+        (tasktype3 speed [plusMinus]) ...
+    )
+)
