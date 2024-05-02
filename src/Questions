@@ -3,7 +3,7 @@
 3 - Bu jobTypeları kendimiz mi giricez?
 4 - jobType'ların yanındaki sayı neyi belirtiyor (taskType'da belirtilen parametreden farkı ne) ?
 5 - Station'lardaki Task'lari kendimiz mi yazıyoruz?
-6 - Station'lardaki yanındaki sayı işlem kapasitesini mi belirtiyor?
+6 - Station'lardaki yanındaki sayı işlem kapasitesini mi belirtiyor?       --maxCapacity
 7 - Station MULTIFLAG FIFOFLAG program kendisi mi kara veriyor, yoksa biz mi seçiyoruz?
 8 - Biz seçiyorsak neye göre seçiyoruz(kafamıza göre mi)?
 9 - Bu parametreleri .txt dosyası içerisinden mi çekeceğiz, command line'a teker teker parametre olarak mı giricez, yoksa Scanner ile mi çekecez?
