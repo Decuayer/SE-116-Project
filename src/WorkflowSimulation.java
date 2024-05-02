@@ -3,7 +3,7 @@ import java.util.PriorityQueue;
 
 public class WorkflowSimulation {
     List<Station> stations;
-    PriorityQueue<Job> jobQueue;
+    PriorityQueue<JobType> jobQueue;
     int currentTime;
     // Methods to simulate time progression and task execution
 

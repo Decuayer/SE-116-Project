@@ -8,7 +8,8 @@
 8 - Biz seçiyorsak neye göre seçiyoruz(kafamıza göre mi)?
 9 - Bu parametreleri .txt dosyası içerisinden mi çekeceğiz, command line'a teker teker parametre olarak mı giricez, yoksa Scanner ile mi çekecez?
 10 - Bu işlemlerin ilerlediğini yüzdelik olarak mı belirticez
-
+11 - Station'ların speed'ini neye göre ayarlıyoruz? Dakika mı saniye mi?      --unit/min
+12 - Hangi job'un ne kadar sürede biteceğini nereye yazacağız.
 
 
 (TASKTYPES
