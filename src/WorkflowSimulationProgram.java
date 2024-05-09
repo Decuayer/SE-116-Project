@@ -49,8 +49,47 @@ public class WorkflowSimulationProgram {
 
         Job jobTypes = new Job("JobTypes",jobTypeList);
 
-        System.out.println(jobTypes.getTaskSequence().get(0).getTaskList().get(2).getSize());
-        System.out.println(jobTypes.getTaskSequence().get(0).getTaskList().get(1).getSize());
+        StationType T1_S1 = new StationType(T1,2);
+        StationType T2_S1 = new StationType(T2,3,0.20);
+        StationType T1_S2 = new StationType(T1,2);
+        StationType T2_S2 = new StationType(T2,4);
+        StationType T3_S3 = new StationType(T3,1);
+        StationType T4_S4 = new StationType(T4,1);
+        StationType T21_S4 = new StationType(T21,2,0.50);
+
+        List<StationType> S1List = new ArrayList<StationType>();
+        List<StationType> S2List = new ArrayList<StationType>();
+        List<StationType> S3List = new ArrayList<StationType>();
+        List<StationType> S4List = new ArrayList<StationType>();
+
+        S1List.add(T1_S1);
+        S1List.add(T2_S1);
+        S2List.add(T1_S2);
+        S2List.add(T2_S2);
+        S3List.add(T3_S3);
+        S4List.add(T4_S4);
+        S4List.add(T21_S4);
+
+        Station S1 = new Station("S1",1,false,false, S1List);
+        Station S2 = new Station("S2",2,false,true, S2List);
+        Station S3 = new Station("S3",2,false,true, S3List);
+        Station S4 = new Station("S4",3,true,true, S4List);
+
+        List<Station> stationList = new ArrayList<Station>();
+
+        stationList.add(S1);
+        stationList.add(S2);
+        stationList.add(S3);
+        stationList.add(S4);
+
+        StationWork stations = new StationWork("Stations",stationList);
+
+
+
+
+        System.out.println(stations.getStationList().get(0).getStationTypeList().get(0).getSpeed());
+        System.out.println(stations.getStationList().get(0).getStationTypeList().get(0).getPlusMinus());
+        System.out.println(stations.getStationList().get(0).getStationTypeList().get(0).getCalculatedSpeed());
 
 
 

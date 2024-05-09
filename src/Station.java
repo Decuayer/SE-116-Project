@@ -24,6 +24,7 @@ public class Station extends StationType {
         this.stationID = stationID;
     }
     public void setMaxCapacity(int maxCapacity) {
+        // değerin integer şekilde olduğunu kontrol eden try catch.
         this.maxCapacity = maxCapacity;
     }
     public void setMultiFlag(boolean multiFlag) {
@@ -33,6 +34,7 @@ public class Station extends StationType {
         this.fifoFlag = fifoFlag;
     }
     public void setStationTypeList(List<StationType> stationTypeList) {
+
         this.stationTypeList = stationTypeList;
     }
 

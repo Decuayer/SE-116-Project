@@ -2,7 +2,6 @@ public class StationType extends TaskType{
     private TaskType taskType;
     private double speed;
     private double plusMinus;
-//CÜCÜ ADAM
 
     public StationType() {
 
@@ -26,18 +25,38 @@ public class StationType extends TaskType{
     }
 
     public void setSpeed(double speed) {
+        // Speed değerinin negatif olup olmadığını kontrol eden try catch.
         this.speed = speed;
     }
 
     public void setPlusMinus(double plusMinus) {
+        // plusMinus değeri negatif olup olmadığını kontrol eden try catch.
         this.plusMinus = plusMinus;
     }
 
-    public TaskType getTaskType() {return taskType;}
-    public double getSpeed() {return speed;}
-    public double getPlusMinus() {return plusMinus;}
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public double getPlusMinus() {
+        return plusMinus;
+    }
+
+    Random r=new Random();
+    public double getCalculatedSpeed(){
+        if(getPlusMinus() == 0) {
+            return getSpeed();
+        }
+        double max=speed+(speed*plusMinus);
+        double min=speed-(speed*plusMinus);
+        return r.nextDouble(min,max);
+
+    }
 
 
-    // verilen speed ve plusMinus değerine göre aralıktaki rastgele bir hız değeri verecek fonksiyon.
 
 }
