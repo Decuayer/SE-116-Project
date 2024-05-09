@@ -1,4 +1,6 @@
-public class StationType extends TaskType{
+import java.sql.Time;
+import java.util.Random;
+public class StationType extends TaskType {
     private TaskType taskType;
     private double speed;
     private double plusMinus;
