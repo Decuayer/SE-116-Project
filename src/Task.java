@@ -4,14 +4,19 @@ public class Task extends TaskType{
 
     public Task() {
         //Herhangi bir parametre girilmediği zaman uyarı verecek try catch.
+
     }
 
 
     public Task(TaskType taskType) {
         super(taskType.getTaskID(), taskType.getDefualtSize());
         // defualtSize var mı yok mu kontrol eden try catch. Eğer defualtSize yoksa uyarı verecek.
-        if(getDefualtSize() == 0) {
-
+        try{
+            if(getDefualtSize() == 0.0) {
+            throw new IllegalArgumentException("Error: Default size is not set.");
+            }
+        }catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
         }
         //--
         setTaskType(taskType);
@@ -30,7 +35,19 @@ public class Task extends TaskType{
     public void setSize(double size) {
         // size negatif mi değil mi kontrol edecek try catch.
         // size variable type doğru mu kontrol eden  try catch.
-        this.size = size;
+        try {
+
+            if (size < 0) {
+                throw new IllegalArgumentException("Error: (size) cannot be negative.");
+            }
+
+            this.size = size;
+
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error: Invalid data type for (size).");
+        }
     }
 
     public TaskType getTaskType() {return taskType;}

@@ -3,7 +3,6 @@ import java.util.List;
 public class StationWork extends Station{
     private String stationWorkName;
     private List<Station> stationList;
-    private static List<StationType> stationTypeList;
 
 
     public StationWork() {
@@ -27,6 +26,4 @@ public class StationWork extends Station{
 
     public List<Station> getStationList() {return stationList;}
 
-
-    // stationTypeList içerisine stationList'ten aldığı getStationTypeList() değerlerini teker teker yazdıran ve aynısından varsa yazdırmayan fonksiyon yazılacak.
 }

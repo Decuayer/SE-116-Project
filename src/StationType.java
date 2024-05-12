@@ -1,4 +1,3 @@
-import java.sql.Time;
 import java.util.Random;
 public class StationType extends TaskType {
     private TaskType taskType;
@@ -22,18 +21,38 @@ public class StationType extends TaskType {
     }
 
     public void setTaskType(TaskType taskType) {
-        // belirtilen tasktype var mı kontrol eden try catch. Aynı anda birden fazlasını yakalayabilmesi lazım.
         this.taskType = taskType;
     }
 
     public void setSpeed(double speed) {
         // Speed değerinin negatif olup olmadığını kontrol eden try catch.
-        this.speed = speed;
+        try {
+            if (speed < 0) {
+                throw new IllegalArgumentException("Error: (speed) value can't be negative.");
+            }
+
+            this.speed = speed;
+
+        } catch (IllegalArgumentException e) {
+
+            System.out.println(e.getMessage());
+        }
     }
 
     public void setPlusMinus(double plusMinus) {
         // plusMinus değeri negatif olup olmadığını kontrol eden try catch.
-        this.plusMinus = plusMinus;
+        try {
+            if (plusMinus < 0) {
+                throw new IllegalArgumentException("Error: (plusMinus) value can't be negative.");
+            }
+
+            this.plusMinus = plusMinus;
+
+        } catch (IllegalArgumentException e) {
+
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public TaskType getTaskType() {

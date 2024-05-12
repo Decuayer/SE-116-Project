@@ -25,7 +25,13 @@ public class Station extends StationType {
     }
     public void setMaxCapacity(int maxCapacity) {
         // değerin integer şekilde olduğunu kontrol eden try catch.
-        this.maxCapacity = maxCapacity;
+        try {
+            Integer.parseInt(String.valueOf(maxCapacity));
+            this.maxCapacity = maxCapacity;
+        } catch (NumberFormatException e) {
+
+            System.out.println(stationID + "Enter a integer value.");
+        }
     }
     public void setMultiFlag(boolean multiFlag) {
         this.multiFlag = multiFlag;
