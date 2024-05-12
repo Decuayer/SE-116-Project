@@ -5,34 +5,123 @@ import java.lang.StringBuilder;
 
 public class ReadTextFile {
     private static Scanner input;
+    private String fileName;
     private static ArrayList<String> txtList = new ArrayList<String>();
     private static ArrayList<TaskType> taskTypesList = new ArrayList<TaskType>();
     private static ArrayList<JobType> jobTypeList = new ArrayList<JobType>();
     private static ArrayList<Station> stationList = new ArrayList<Station>();
+    private static ArrayList<JobFile> jobFileList = new ArrayList<JobFile>();
 
-    // 0 => workfflow.txt
-    // 1 => jobfile.txt
 
     public ReadTextFile(String txt, int choice) {
         switch (choice) {
+            // 0 => workfflow.txt
             case 0:
                 openFile(txt);
-                readWorkflow(2);
+                readFile(2);
                 closeFile();
                 workflowProcess();
                 break;
+            // 1 => jobfile.txt
             case 1:
-                System.out.println("Not read yet...");
+                openFile(txt);
+                readFile(2);
+                closeFile();
+                jobfileProcess();
                 break;
         }
     }
 
+
     public ArrayList<TaskType> getTaskTypesList() {return taskTypesList;}
     public ArrayList<JobType> getJobTypeList() {return jobTypeList;}
     public ArrayList<Station> getStationList() {return stationList;}
+    public ArrayList<JobFile> getJobFileList() {return jobFileList;}
 
-    public static void main(String[] args) {
+    public static void jobfileProcess() {
 
+        ArrayList<String> jobFileString = new ArrayList<String>();
+        ArrayList<String> jobFileControl = new ArrayList<String>();
+
+        boolean jobFileResume = false;
+        int jobFileIndex = 0;
+        int jobfileCount = 0;
+
+        for(int i = 0; i < txtList.size(); i++) {
+            String[] jobFileWords = txtList.get(i).split(" ");
+            for(String j : jobFileWords) {
+                jobFileString.add(j.trim());
+            }
+        }
+        Iterator<String> jobFileIterator = jobFileString.iterator();
+        while(jobFileIterator.hasNext()) {
+            String jobFileElement = jobFileIterator.next();
+            if(jobFileElement.isEmpty()) {
+                jobFileIterator.remove();
+            }
+        }
+        ArrayList<ArrayList<String>> jobFile = new ArrayList<>();
+        for(int i = 0;  i < jobFileString.size(); i++) {
+            if(jobfileCount == 4) {
+                jobFileIndex++;
+                jobfileCount = 0;
+                jobFileResume = false;
+            }
+            if (jobFileString.get(i).startsWith("Job") && Character.isDigit(jobFileString.get(i).charAt(3))) {
+                jobFile.add(new ArrayList<>());
+                jobFileResume = true;
+            }
+            if(jobFileResume) {
+                try {
+                    jobFileControl.add(jobFileString.get(i));
+                    jobFile.get(jobFileIndex).add(jobFileString.get(i));
+                    jobfileCount++;
+                } catch (IndexOutOfBoundsException eIndex) {
+                    System.out.println("Line " + jobFileIndex + " : " + jobFileString.get(i) + " invalid value. Delete value.");
+                }
+            }
+        }
+        int startTime = 0;
+        int duration = 0;
+        for(int i = 0; i < jobFile.size(); i++) {
+            startTime = 0;
+            duration = 0;
+            for(int j = 0; j < jobFile.get(i).size(); j++) {
+                if (jobFile.get(i).get(j).contains("Job")) {
+                    if(j != jobFile.get(i).size()-3) {
+                        for (JobType x: jobTypeList) {
+                            if(x.getJobID().equals(jobFile.get(i).get(j+1))) {
+                                if(Character.isLetter(jobFile.get(i).get(j+1).charAt(0))) {
+                                    try {
+                                        if(!(Integer.parseInt(jobFile.get(i).get(j+2)) <= 0)) {
+                                            startTime = Integer.parseInt(jobFile.get(i).get(j+2));
+                                        } else {
+                                            System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+2) + " (startTime) has negative value. Change it" );
+                                        }
+                                    } catch (NumberFormatException eNumber) {
+                                        System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+2) + " startTime is invalid type value. Change it." );
+                                    }
+                                    try {
+                                        if (!(Integer.parseInt(jobFile.get(i).get(j+3)) <= 0)) {
+                                            duration = Integer.parseInt(jobFile.get(i).get(j+3));
+                                        } else {
+                                            System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+3) + " (duration) has negative value. Change it" );
+                                        }
+                                    } catch (NumberFormatException eNumber) {
+                                        System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+3) +  "  duration is invalid type value. Change it." );
+                                    }
+                                    jobFileList.add(new JobFile(jobFile.get(i).get(j), x , startTime, duration));
+                                } else {
+                                    System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+1) + " (JOBTYPE) is not in correct type. Change it." );
+                                }
+                            }
+                        }
+                    }
+                } else {
+
+                }
+            }
+        }
     }
 
     // WORKFLOW PROCESS METHOD
@@ -805,8 +894,9 @@ public class ReadTextFile {
     }
 
     // TASKTYPES PRINT
-    public static void taskTypesPrint() {
+    public void taskTypesPrint() {
         System.out.println();
+        System.out.println(fileName);
         System.out.println("TaskTypes");
         for (TaskType i : taskTypesList) {
             System.out.println(i.getTaskID() + " -- " + i.getDefualtSize());
@@ -815,8 +905,9 @@ public class ReadTextFile {
     }
 
     // JOBTYPES PRINT
-    public static void jobTypesPrint() {
+    public void jobTypesPrint() {
         System.out.println();
+        System.out.println(fileName);
         System.out.println("JobTypes");
         for(int i = 0; i < jobTypeList.size(); i++) {
             System.out.print(jobTypeList.get(i).getJobID() + " - ");
@@ -829,8 +920,9 @@ public class ReadTextFile {
     }
 
     // STATIONS PRINT
-    public static void stationsPrint() {
+    public void stationsPrint() {
         System.out.println();
+        System.out.println(fileName);
         System.out.println("Stations");
         for(Station x: stationList) {
             System.out.print(x.getStationID()+ " ");
@@ -847,9 +939,24 @@ public class ReadTextFile {
         System.out.println();
     }
 
+    // JOBFILE PRINT
+    public void jobFilePrint() {
+        System.out.println();
+        System.out.println(fileName);
+        for (JobFile x : jobFileList) {
+            System.out.print(x.getJobName() + " ");
+            System.out.print(x.getJobType().getJobID() + " ");
+            System.out.print(x.getStartTime() + " ");
+            System.out.print(x.getDuration() + " ");
+            System.out.println();
+        }
+        System.out.println();
+    }
+
     // OPEN FILE
-    public static void openFile(String txt) {
+    public void openFile(String txt) {
         try {
+            fileName = txt;
             input = new Scanner(Paths.get("src/"+txt));
         } catch(IOException ioException) {
             System.err.println("Error opening file. Terminating.");
@@ -859,7 +966,7 @@ public class ReadTextFile {
     }
 
     // READ FILE
-    public static void readWorkflow(int choice) {
+    public static void readFile(int choice) {
         try{
             switch (choice) {
                 // reads one by one
