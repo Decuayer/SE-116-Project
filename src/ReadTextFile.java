@@ -930,7 +930,7 @@ public class ReadTextFile {
             System.out.print(x.isMultiFlag()+ " ");
             System.out.print(x.isFifoFlag()+ " ");
             for(StationType y : x.getStationTypeList()) {
-                System.out.print(y.getTaskType().getTaskID() + " ");
+                System.out.print(y.getTaskID() + " ");
                 System.out.print(y.getSpeed() + " ");
                 System.out.print(y.getPlusMinus() + " ");
             }

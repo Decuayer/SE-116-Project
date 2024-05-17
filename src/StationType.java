@@ -9,13 +9,13 @@ public class StationType extends TaskType {
     }
 
     public StationType(TaskType taskType, double speed) {
-        setTaskType(taskType);
+        super(taskType.getTaskID(), taskType.getDefualtSize());
         setSpeed(speed);
         setPlusMinus(0);
     }
 
     public StationType(TaskType taskType, double speed, double plusMinus) {
-        setTaskType(taskType);
+        super(taskType.getTaskID(), taskType.getDefualtSize());
         setSpeed(speed);
         setPlusMinus(plusMinus);
     }
@@ -67,14 +67,15 @@ public class StationType extends TaskType {
         return plusMinus;
     }
 
-    Random r=new Random();
+    ;
     public double getCalculatedSpeed(){
+        Random random = new Random(System.currentTimeMillis());
         if(getPlusMinus() == 0) {
             return getSpeed();
         }
         double max=speed+(speed*plusMinus);
         double min=speed-(speed*plusMinus);
-        return r.nextDouble(min,max);
+        return random.nextDouble(min,max);
 
     }
 

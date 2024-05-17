@@ -10,7 +10,6 @@ public class Task extends TaskType{
 
     public Task(TaskType taskType) {
         super(taskType.getTaskID(), taskType.getDefualtSize());
-        // defualtSize var mı yok mu kontrol eden try catch. Eğer defualtSize yoksa uyarı verecek.
         try{
             if(getDefualtSize() == 0.0) {
             throw new IllegalArgumentException("Error: Default size is not set.");
@@ -18,14 +17,11 @@ public class Task extends TaskType{
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
         }
-        //--
-        setTaskType(taskType);
     }
 
 
     public Task(TaskType taskType, double size) {
         super(taskType.getTaskID(), taskType.getDefualtSize());
-        setTaskType(taskType);
         setSize(size);
     }
 
