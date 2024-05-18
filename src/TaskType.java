@@ -1,4 +1,4 @@
-public class TaskType {
+ public class TaskType {
     private String taskID;
     private double defualtsize;
 
