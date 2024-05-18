@@ -8,7 +8,7 @@ public class Station extends StationType {
     private boolean multiFlag;
     private boolean fifoFlag;
     private List<StationType> stationTypeList;
-    private List<JobFile> staticStationTypeContinue = new ArrayList<JobFile>();
+    private  List<JobFile> workingJobs = new ArrayList<JobFile>();
 
     public Station() {}
 
@@ -49,31 +49,14 @@ public class Station extends StationType {
     public boolean isMultiFlag() {return multiFlag;}
     public boolean isFifoFlag() {return fifoFlag;}
     public List<StationType> getStationTypeList() {return stationTypeList;}
+    public List<JobFile> getWorkingJobs() {return workingJobs;}
 
-    public void addStaticStation(JobFile jobFile) {
-        if(staticStationTypeContinue.isEmpty()) {
-            staticStationTypeContinue.add(jobFile);
-        } else {
-            int count = 0;
-            for(int i = 0; i < staticStationTypeContinue.size(); i++) {
-                if(staticStationTypeContinue.get(i) == jobFile) {
-                    count++;
-                }
-            }
-            if(count == 0) {
-                staticStationTypeContinue.add(jobFile);
-                Collections.sort(staticStationTypeContinue, new JobFileComparator());
-            }
-        }
-
-    }
-    public void removeStaticStation(JobFile jobFile) {
-        staticStationTypeContinue.remove(jobFile);
+    public void addWorkingJobs(JobFile jobFile) {
+        workingJobs.add(jobFile);
     }
 
-    public void printStaticList() {
-        for(int i = 0; i < staticStationTypeContinue.size(); i++) {
-            System.out.println(stationID+ " " +(i+1) + ". - " + staticStationTypeContinue.get(i).getJobName());
-        }
+    public void removeWorkingJobs(JobFile jf) {
+        workingJobs.remove(jf);
     }
+
 }

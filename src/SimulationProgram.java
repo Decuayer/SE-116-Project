@@ -2,12 +2,35 @@ import java.util.*;
 
 public class SimulationProgram {
     public static void main(String[] args) {
+        if(args.length < 2) {
+            System.err.println("Usage: java Main <workflow_file> <job_file>");
+            System.exit(1);
+        }
+        String workflowFileName = args[0];
+        String jobFileName  = args[1];
+
 
         // READ CLASS CONSTRUCTOR
         // CONSTRUCTOR içerisindeki list'ler static olduğu için birlikte olmadığı zaman hata verir.
         // workflow tek başına çalışır, jobfile tek başına çalışamaz.
-        ReadTextFile workflowFile = new ReadTextFile("workflow.txt", 0);
-        ReadTextFile jobFile = new ReadTextFile("jobfile.txt",1);
+        ReadTextFile workflowFile = new ReadTextFile(workflowFileName, 0);
+        ReadTextFile jobFile = new ReadTextFile(jobFileName,1);
+
+
+        boolean w = false;
+        boolean j = false;
+        if(workflowFile.getEscape()) {
+            System.err.println("Problem occur in workflow.txt file");
+            w = true;
+        }
+        if (jobFile.getEscape()) {
+            System.err.println("Problem occur in jobfile.txt file");
+            j = true;
+        }
+        if(w || j ) {
+            System.exit(1);
+        }
+
 
         // FILE'dan çekilen ArrayListler 
         ArrayList<TaskType> fileTaskTypesList = workflowFile.getTaskTypesList();
@@ -21,25 +44,6 @@ public class SimulationProgram {
         workflowFile.stationsPrint();
         jobFile.jobFilePrint();
 
-
-        Simulator simulator = new Simulator(fileTaskTypesList, fileJobTypeList, fileStationList, fileJobFileList);
-        simulator.initialize();
-        simulator.run();
-
-
-
-
-
-
-        /*
-        int time = 0;
-        int endtime = -1;
-
-        for(JobFile job : fileJobFileList) {
-            if(job.getDuration() >= endtime) {
-                endtime = job.getDuration()+job.getStartTime();
-            }
-        }
 
         Map<JobFile, Map<Task, ArrayList<Station>>> jobSequence = new HashMap<JobFile, Map<Task, ArrayList<Station>>>();
         for(JobFile job : fileJobFileList) {
@@ -57,12 +61,12 @@ public class SimulationProgram {
             }
             jobSequence.put(job, taskSequence);
         }
+
         for (Map.Entry<JobFile, Map<Task, ArrayList<Station>>> job : jobSequence.entrySet()) {
             System.out.println(job.getKey().getJobName() + " => ");
             for (Map.Entry<Task, ArrayList<Station>> task : job.getValue().entrySet()) {
                 System.out.print("\t"+task.getKey().getTaskID() + "("+task.getKey().getSize()+") ");
                 for(Station station : task.getValue()) {
-                    station.addStaticStation(job.getKey());
                     System.out.print(station.getStationID() + "(");
                     for(StationType stationType : station.getStationTypeList()) {
                         if(task.getKey().getTaskID() == stationType.getTaskID()) {
@@ -74,30 +78,18 @@ public class SimulationProgram {
             }
             System.out.println();
         }
-        for (Map.Entry<JobFile, Map<Task, ArrayList<Station>>> job : jobSequence.entrySet()) {
-            for (Map.Entry<Task, ArrayList<Station>> task : job.getValue().entrySet()) {
 
-            }
-        }
+        System.out.println("---------------------------------------");
+        Simulation simulation = new Simulation(fileTaskTypesList,fileJobTypeList,fileStationList,fileJobFileList);
+        simulation.initialize();
+        simulation.run();
+        System.out.println("---------------------------------------");
+        simulation.printResults();
 
 
-        ArrayList<Boolean> jobsContinue = new ArrayList<Boolean>();
-        for (JobFile j : fileJobFileList) {
-            jobsContinue.add(false);
-        }
-        System.out.println();
-        for(; time < endtime; time++) {
-            for(int i = 0; i < fileJobFileList.size(); i++) {
-                if(fileJobFileList.get(i).getStartTime() == time) {
-                    jobsContinue.set(i,true);
-                }
-            }
-        }
-        for (Station x : fileStationList) {
-            x.printStaticList();
-            System.out.println();
-        }
-        */
+
+
+
     }
 
 

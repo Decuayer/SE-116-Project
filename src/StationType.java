@@ -4,9 +4,7 @@ public class StationType extends TaskType {
     private double speed;
     private double plusMinus;
 
-    public StationType() {
-
-    }
+    public StationType() {}
 
     public StationType(TaskType taskType, double speed) {
         super(taskType.getTaskID(), taskType.getDefualtSize());

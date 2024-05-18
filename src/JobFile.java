@@ -4,7 +4,8 @@ public class JobFile {
     private int startTime;
     private int duration;
     private int currentTaskIndex;
-    private int completionTime;
+    private double completionTime;
+    private Station currentStation;
 
     public JobFile(String jobName, JobType jobTypeID, int startTime, int duration) {
         setJobName(jobName);
@@ -20,7 +21,8 @@ public class JobFile {
     public int getStartTime() {return startTime;}
     public int getDuration() {return duration;}
     public int getCurrentTaskIndex() {return currentTaskIndex;}
-    public int getCompletionTime() {return  completionTime;}
+    public double getCompletionTime() {return  completionTime;}
+    public Station getCurrentStation() {return currentStation;}
 
     public void setJobName(String jobName) {
         this.jobName = jobName;
@@ -35,7 +37,9 @@ public class JobFile {
         this.duration = duration;
     }
     public void setCurrentTaskIndex(int currentTaskIndex) {this.currentTaskIndex = currentTaskIndex;}
-    public void setCompletionTime(int completionTime) {this.completionTime = completionTime;}
+    public void setCompletionTime(double completionTime) {this.completionTime = completionTime;}
+    public void setCurrentStation(Station currentStation) {this.currentStation = currentStation;}
+
 
     public void incrementTaskIndex() {
         currentTaskIndex++;

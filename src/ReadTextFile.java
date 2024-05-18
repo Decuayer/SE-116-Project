@@ -11,6 +11,7 @@ public class ReadTextFile {
     private static ArrayList<JobType> jobTypeList = new ArrayList<JobType>();
     private static ArrayList<Station> stationList = new ArrayList<Station>();
     private static ArrayList<JobFile> jobFileList = new ArrayList<JobFile>();
+    private static boolean escape = false;
 
 
     public ReadTextFile(String txt, int choice) {
@@ -96,29 +97,34 @@ public class ReadTextFile {
                                         if(!(Integer.parseInt(jobFile.get(i).get(j+2)) <= 0)) {
                                             startTime = Integer.parseInt(jobFile.get(i).get(j+2));
                                         } else {
+                                            escape = true;
                                             System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+2) + " (startTime) has negative value. Change it" );
                                         }
                                     } catch (NumberFormatException eNumber) {
+                                        escape = true;
                                         System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+2) + " startTime is invalid type value. Change it." );
                                     }
                                     try {
                                         if (!(Integer.parseInt(jobFile.get(i).get(j+3)) <= 0)) {
                                             duration = Integer.parseInt(jobFile.get(i).get(j+3));
                                         } else {
+                                            escape = true;
                                             System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+3) + " (duration) has negative value. Change it" );
                                         }
                                     } catch (NumberFormatException eNumber) {
+                                        escape = true;
                                         System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+3) +  "  duration is invalid type value. Change it." );
                                     }
                                     jobFileList.add(new JobFile(jobFile.get(i).get(j), x , startTime, duration));
                                 } else {
+                                    escape = true;
                                     System.out.println("Line " + i+1 + " : " + jobFile.get(i).get(j+1) + " (JOBTYPE) is not in correct type. Change it." );
                                 }
                             }
                         }
                     }
                 } else {
-
+                    //?
                 }
             }
         }
@@ -145,6 +151,8 @@ public class ReadTextFile {
         ArrayList<Integer> stationTypeLines = new ArrayList<Integer>();
         ArrayList<String> stationTypeStringLines = new ArrayList<String>();
         ArrayList<String> stationTypeString = new ArrayList<>();
+
+
 
 
         //------------------------------- TASKTYPES --------------------------------------
@@ -217,6 +225,7 @@ public class ReadTextFile {
                         try {
                             if(Double.parseDouble(taskTypeString.get(i + 1)) < 0 ) {
                                 System.out.println(taskTypeString.get(i) + "has a negative task size" + taskTypeString.get(i+1));
+                                escape = true;
                             }else {
                                 taskTypesList.add(new TaskType(taskTypeString.get(i), Double.parseDouble(taskTypeString.get(i + 1))));
                                 taskTypeControl.add(taskTypeString.get(i));
@@ -228,6 +237,7 @@ public class ReadTextFile {
                             } else {
                                 System.out.print("Line " + taskTypeLines.getFirst() + "-" + taskTypeLines.getLast() + " : ");
                             }
+                            escape = true;
                             System.out.print(taskTypeString.get(i) + " your input size is incorrect (" + taskTypeString.get(i + 1) + ") is wrong. Enter correct version.");
                             System.out.println();
                         } catch(Exception e) {
@@ -236,6 +246,7 @@ public class ReadTextFile {
                             } else {
                                 System.out.print("Line " + taskTypeLines.getFirst() + "-" + taskTypeLines.getLast() + " : ");
                             }
+                            escape = true;
                             System.err.print(e);
                             System.out.println();
                         }
@@ -257,14 +268,18 @@ public class ReadTextFile {
                     try {
                         if(Double.parseDouble(taskTypeString.get(i)) < 0) {
                             if(Character.isLetter(taskTypeString.get(i-1).charAt(0))) {
+                                escape = true;
                                 System.out.print(taskTypeString.get(i-1) + " has a negative task size " + taskTypeString.get(i));
                             } else {
+                                escape = true;
                                 System.out.print(taskTypeString.get(i) + " is an invalid input. Change it");
                             }
                         } else {
+                            escape = true;
                             System.out.print(taskTypeString.get(i) + " is an invalid input. Change it");
                         }
                     } catch (NumberFormatException eNumber) {
+                        escape = true;
                         System.out.print(taskTypeString.get(i) + " is an invalid tasktypeID.");
 
                     }
@@ -283,6 +298,7 @@ public class ReadTextFile {
                             } else {
                                 System.out.print("Line " + taskTypeLines.getFirst() + "-" + taskTypeLines.getLast() + " : ");
                             }
+                            escape = true;
                             System.out.print(taskTypesList.get(i).getTaskID() + " is listed twice.");
                             System.out.println();
                             taskTemp=j;
@@ -378,6 +394,7 @@ public class ReadTextFile {
                                 if(jobs.get(i).get(j).equals(x.getTaskID())) {
                                     try{
                                         if(x.getDefualtSize() <= 0 && Double.parseDouble(jobs.get(i).get(j+1)) <= 0) {
+                                            escape = true;
                                             System.out.print(x.getTaskID() +" has no default size, either a default size must be declared in TASKTYPE list or the size must be declared within the job. ");
                                             System.out.println();
                                         } else {
@@ -395,6 +412,7 @@ public class ReadTextFile {
                                                 System.out.print("Line " + jobTypeLines.get(i-1) + " : ");
                                             }
                                         }
+                                        escape = true;
                                         System.out.print(jobs.get(i).get(j) + " your input size is incorrect (" + jobs.get(i).get(j+1) + ") is wrong. Enter correct version.");
                                         System.out.println();
                                     } catch(Exception e) {
@@ -407,6 +425,7 @@ public class ReadTextFile {
                                                 System.out.print("Line " + jobTypeLines.get(i-1) + " : ");
                                             }
                                         }
+                                        escape = true;
                                         System.err.print(jobs.get(i).get(0) + " => " + e);
                                         System.out.println();
                                     }
@@ -425,6 +444,7 @@ public class ReadTextFile {
                                                 System.out.print("Line " + jobTypeLines.get(i-1) + " : ");
                                             }
                                         }
+                                        escape = true;
                                         System.out.print(x.getTaskID() +" has no default size, either a default size must be declared in TASKTYPE list or the size must be declared within the job. ");
                                         System.out.println();
                                     } else {
@@ -447,6 +467,7 @@ public class ReadTextFile {
                                             System.out.print("Line " + jobTypeLines.get(i-1) + " : ");
                                         }
                                     }
+                                    escape = true;
                                     System.out.print(x.getTaskID() +" has no default size, either a default size must be declared in TASKTYPE list or the size must be declared within the job. ");
                                     System.out.println();
                                 } else {
@@ -479,18 +500,23 @@ public class ReadTextFile {
                     try {
                         if(Double.parseDouble(jobs.get(i).get(j)) <= 0) {
                             if(Character.isLetter(jobs.get(i).get(j-1).charAt(0))) {
+                                escape = true;
                                 System.out.print(jobs.get(i).get(j -1) + " has a negative task size of " + jobs.get(i).get(j));
                             } else {
+                                escape = true;
                                 System.out.print(jobs.get(i).get(j) + " is invalid input. Delete it.");
                             }
                         }else {
                             if(Character.isLetter(jobs.get(i).get(j-1).charAt(0))) {
+                                escape = true;
                                 System.out.print(jobs.get(i).get(j) + " not declered because of " + jobs.get(i).get(j-1));
                             } else {
+                                escape = true;
                                 System.out.print(jobs.get(i).get(j) + " is invalid input. Delete it.");
                             }
                         }
                     } catch (NumberFormatException eNumber) {
+                        escape = true;
                         System.out.print(jobs.get(i).get(j) + " is not one of the declared task types.");
                     }
                     System.out.println();
@@ -512,6 +538,7 @@ public class ReadTextFile {
                                     System.out.print("Line " + jobTypeLines.get(i) + " : ");
                                 }
                             }
+                            escape = true;
                             System.out.print("One JobType should be declared once. (" + jobTypeList.get(i).getJobID() + ") => Line " + jobTypeLines.get(j+1));
                             System.out.println();
                             jobTemp=j;
@@ -622,6 +649,7 @@ public class ReadTextFile {
                                                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                                     }
                                                 }
+                                                escape = true;
                                                 System.out.print(stations.get(i).get(j) + " your input size is incorrect (" + stations.get(i).get(j+1) + ", "+stations.get(i).get(j+2)  +") is wrong. Enter correct version.");
                                                 System.out.println();
                                             } catch(Exception e) {
@@ -634,6 +662,7 @@ public class ReadTextFile {
                                                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                                     }
                                                 }
+                                                escape = true;
                                                 System.out.print(stations.get(i).get(j) + " => " + e);
                                                 System.out.println();
                                             }
@@ -657,6 +686,7 @@ public class ReadTextFile {
                                                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                                     }
                                                 }
+                                                escape = true;
                                                 System.out.print(stations.get(i).get(j) + " your input size is incorrect (" + stations.get(i).get(j+1) + ") is wrong. Enter correct version.");
                                                 System.out.println();
                                             } catch (Exception e) {
@@ -669,6 +699,7 @@ public class ReadTextFile {
                                                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                                     }
                                                 }
+                                                escape = true;
                                                 System.out.print(stations.get(i).get(j) + " => " + e);
                                                 System.out.println();
                                             }
@@ -685,6 +716,7 @@ public class ReadTextFile {
                                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                     }
                                 }
+                                escape = true;
                                 System.out.print(stations.get(i).get(j) + " your input size is empty. Enter value => (speed) - (speed, plusMinus);");
                                 System.out.println();
                             }
@@ -706,6 +738,7 @@ public class ReadTextFile {
                                                     System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                                 }
                                             }
+                                            escape = true;
                                             System.out.print(stations.get(i).get(j) + " your input size is incorrect (" + stations.get(i).get(j+1) + ") is wrong. Enter correct version.");
                                             System.out.println();
                                         } catch (Exception e) {
@@ -718,6 +751,7 @@ public class ReadTextFile {
                                                     System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                                 }
                                             }
+                                            escape = true;
                                             System.out.print(stations.get(i).get(j) + " => " + e);
                                             System.out.println();
                                         }
@@ -733,6 +767,7 @@ public class ReadTextFile {
                                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                     }
                                 }
+                                escape = true;
                                 System.out.print(stations.get(i).get(j) + " your input size is empty. Enter value => (speed) - (speed, plusMinus);");
                                 System.out.println();
                             }
@@ -747,6 +782,7 @@ public class ReadTextFile {
                                 System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                             }
                         }
+                        escape = true;
                         System.out.print(stations.get(i).get(j) + " your input size is empty. Enter value => (speed) - (speed, plusMinus);");
                         System.out.println();
                     }
@@ -772,6 +808,7 @@ public class ReadTextFile {
                             System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                         }
                     }
+                    escape = true;
                     System.out.print(stations.get(i).get(1) + " your MaxCapacity size is negative, enter correct version.");
                     System.out.println();
                 } else {
@@ -787,6 +824,7 @@ public class ReadTextFile {
                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                     }
                 }
+                escape = true;
                 System.out.print("maxCapacity "+stations.get(i).get(1) + " your input size is incorrect is wrong. Enter integer value.");
                 System.out.println();
             }
@@ -806,6 +844,7 @@ public class ReadTextFile {
                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                     }
                 }
+                escape = true;
                 System.out.print(stations.get(i).get(2) + " your MULTIFLAG input is incorrect enter (Y|N)");
                 System.out.println();
             }
@@ -825,6 +864,7 @@ public class ReadTextFile {
                         System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                     }
                 }
+                escape = true;
                 System.out.print(stations.get(i).get(3) + " your FIFOFLAG input is incorrect enter (Y|N)");
                 System.out.println();
             }
@@ -842,6 +882,7 @@ public class ReadTextFile {
                             System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                         }
                     }
+                    escape = true;
                     try {
                         if(Double.parseDouble(stations.get(i).get(j)) <= 0) {
                             if(Character.isLetter(stations.get(i).get(j-1).charAt(0))) {
@@ -882,6 +923,7 @@ public class ReadTextFile {
                                     System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
                                 }
                             }
+                            escape = true;
                             System.out.print("One Station should be declared once. (" + stationList.get(i).getStationID() + ") => Line " + stationTypeLines.get(j+1));
                             System.out.println();
                             stationTemp=j;
@@ -953,6 +995,8 @@ public class ReadTextFile {
         System.out.println();
     }
 
+    public boolean getEscape() {return escape;}
+
     // OPEN FILE
     public void openFile(String txt) {
         try {
@@ -985,8 +1029,10 @@ public class ReadTextFile {
 
         } catch(NoSuchElementException elementException) {
             System.err.println("File improperly formed. Terminating.");
+            System.exit(1);
         } catch(IllegalStateException stateException) {
             System.err.println("Error reading from file. Terminating.");
+            System.exit(1);
         }
     }
 
