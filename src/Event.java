@@ -1,6 +1,6 @@
-public class Event implements Comparable<Event>{
+public class Event extends JobFile implements Comparable<Event>{
     private double time;
-    private String type; // "start", "complete"
+    private String type; // "start", "complete", "wait"
     private JobFile jobFile;
 
     public Event(double time, String type, JobFile jobFile) {
@@ -17,4 +17,5 @@ public class Event implements Comparable<Event>{
     public int compareTo(Event other) {
         return Double.compare(this.time, other.time);
     }
+
 }

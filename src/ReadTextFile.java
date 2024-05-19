@@ -11,8 +11,7 @@ public class ReadTextFile {
     private static ArrayList<JobType> jobTypeList = new ArrayList<JobType>();
     private static ArrayList<Station> stationList = new ArrayList<Station>();
     private static ArrayList<JobFile> jobFileList = new ArrayList<JobFile>();
-    private static boolean escape = false;
-
+    private boolean escape = false;
 
     public ReadTextFile(String txt, int choice) {
         switch (choice) {
@@ -33,13 +32,13 @@ public class ReadTextFile {
         }
     }
 
-
     public ArrayList<TaskType> getTaskTypesList() {return taskTypesList;}
     public ArrayList<JobType> getJobTypeList() {return jobTypeList;}
     public ArrayList<Station> getStationList() {return stationList;}
     public ArrayList<JobFile> getJobFileList() {return jobFileList;}
 
-    public static void jobfileProcess() {
+    // JOBFILE PROCESS METHOD
+    private void jobfileProcess() {
 
         ArrayList<String> jobFileString = new ArrayList<String>();
         ArrayList<String> jobFileControl = new ArrayList<String>();
@@ -131,7 +130,7 @@ public class ReadTextFile {
     }
 
     // WORKFLOW PROCESS METHOD
-    public static void workflowProcess() {
+    private void workflowProcess() {
         // TASKTYPES ARRAYS
         ArrayList<String> taskTypeControl = new ArrayList<String>();
         ArrayList<Integer> taskTypeLines = new ArrayList<Integer>();
@@ -151,9 +150,6 @@ public class ReadTextFile {
         ArrayList<Integer> stationTypeLines = new ArrayList<Integer>();
         ArrayList<String> stationTypeStringLines = new ArrayList<String>();
         ArrayList<String> stationTypeString = new ArrayList<>();
-
-
-
 
         //------------------------------- TASKTYPES --------------------------------------
 
@@ -548,8 +544,6 @@ public class ReadTextFile {
             }
         }
 
-
-
         //------------------------------- STATIONS --------------------------------------
 
         boolean stationStart = false;
@@ -626,7 +620,15 @@ public class ReadTextFile {
         }
         for(int i = 0 ; i < stations.size(); i++) {
             stationSpeedList.add(new ArrayList<>());
-            for(int j = 4; j < stations.get(i).size(); j++) {
+            int counter = 4;
+            if (Character.isLetter(stations.get(i).get(3).charAt(0))) {
+                if(stations.get(i).get(1).equalsIgnoreCase("Y") || stations.get(i).get(1).equalsIgnoreCase("N")) {
+                    if(stations.get(i).get(2).equalsIgnoreCase("Y") || stations.get(i).get(2).equalsIgnoreCase("N")) {
+                        counter = 3;
+                    }
+                }
+            }
+            for(int j = counter; j < stations.get(i).size(); j++) {
                 if(Character.isLetter(stations.get(i).get(j).charAt(0))) {
                     if (stations.get(i).get(j) != stations.get(i).get(stations.get(i).size() - 1)) {
                         if (stations.get(i).get(j) != stations.get(i).get(stations.get(i).size() - 2)) {
@@ -792,11 +794,11 @@ public class ReadTextFile {
         boolean multiFlag = false;
         boolean fifoFlag = false;
         int maxCapacity = -1;
+        boolean maxCapacityStatus = true;
         for(int i = 0; i < stationSpeedList.size(); i++) {
+            int multiFlagIndex = 2;
+            int fifoFlagIndex = 3;
             stationTypeControl.add(stations.get(i).get(0));
-            stationTypeControl.add(stations.get(i).get(1));
-            stationTypeControl.add(stations.get(i).get(2));
-            stationTypeControl.add(stations.get(i).get(3));
             try {
                 if(Integer.parseInt(stations.get(i).get(1)) <= 0) {
                     if(stationTypeLines.getFirst().equals(stationTypeLines.getLast())) {
@@ -815,21 +817,27 @@ public class ReadTextFile {
                     maxCapacity = Integer.parseInt(stations.get(i).get(1));
                 }
             }catch (NumberFormatException eNumber) {
-                if(stationTypeLines.getFirst().equals(stationTypeLines.getLast())) {
-                    System.out.print("Line " + stationTypeLines.getFirst() + " : ");
+                if (stations.get(i).get(1).equalsIgnoreCase("Y") || stations.get(i).get(1).equalsIgnoreCase("N")) {
+                    maxCapacityStatus = false;
+                    multiFlagIndex = 1;
+                    fifoFlagIndex = 2;
                 } else {
-                    try {
-                        System.out.print("Line " + stationTypeLines.get(i+1) + " : ");
-                    } catch(IndexOutOfBoundsException e) {
-                        System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
+                    if(stationTypeLines.getFirst().equals(stationTypeLines.getLast())) {
+                        System.out.print("Line " + stationTypeLines.getFirst() + " : ");
+                    } else {
+                        try {
+                            System.out.print("Line " + stationTypeLines.get(i+1) + " : ");
+                        } catch(IndexOutOfBoundsException e) {
+                            System.out.print("Line " + stationTypeLines.get(i-1) + " : ");
+                        }
                     }
+                    escape = true;
+                    System.out.print("maxCapacity "+stations.get(i).get(1) + " your input size is incorrect is wrong. Enter integer value.");
+                    System.out.println();
                 }
-                escape = true;
-                System.out.print("maxCapacity "+stations.get(i).get(1) + " your input size is incorrect is wrong. Enter integer value.");
-                System.out.println();
             }
-            if(stations.get(i).get(2).equalsIgnoreCase("Y") || stations.get(i).get(2).equalsIgnoreCase("N")) {
-                if (stations.get(i).get(2).equalsIgnoreCase("Y")) {
+            if(stations.get(i).get(multiFlagIndex).equalsIgnoreCase("Y") || stations.get(i).get(multiFlagIndex).equalsIgnoreCase("N")) {
+                if (stations.get(i).get(multiFlagIndex).equalsIgnoreCase("Y")) {
                     multiFlag = true;
                 } else {
                     multiFlag = false;
@@ -848,8 +856,8 @@ public class ReadTextFile {
                 System.out.print(stations.get(i).get(2) + " your MULTIFLAG input is incorrect enter (Y|N)");
                 System.out.println();
             }
-            if(stations.get(i).get(3).equalsIgnoreCase("Y") || stations.get(i).get(3).equalsIgnoreCase("N")) {
-                if(stations.get(i).get(3).equalsIgnoreCase("Y")) {
+            if(stations.get(i).get(fifoFlagIndex).equalsIgnoreCase("Y") || stations.get(i).get(fifoFlagIndex).equalsIgnoreCase("N")) {
+                if(stations.get(i).get(fifoFlagIndex).equalsIgnoreCase("Y")) {
                     fifoFlag = true;
                 } else {
                     fifoFlag = false;
@@ -868,7 +876,14 @@ public class ReadTextFile {
                 System.out.print(stations.get(i).get(3) + " your FIFOFLAG input is incorrect enter (Y|N)");
                 System.out.println();
             }
-            stationList.add(new Station(stations.get(i).get(0), maxCapacity, multiFlag , fifoFlag, stationSpeedList.get(i)));
+            if(maxCapacityStatus) {
+                stationList.add(new Station(stations.get(i).get(0), maxCapacity, multiFlag , fifoFlag, stationSpeedList.get(i)));
+                stationTypeControl.add(stations.get(i).get(3));
+            } else {
+                stationList.add(new Station(stations.get(i).get(0), multiFlag, fifoFlag, stationSpeedList.get(i)));
+                stationTypeControl.add(stations.get(i).get(1));
+                stationTypeControl.add(stations.get(i).get(2));
+            }
         }
         for(int i = 0; i < stations.size(); i++) {
             for(int j = 0; j < stations.get(i).size();j++) {
@@ -929,6 +944,33 @@ public class ReadTextFile {
                             stationTemp=j;
                         }
                     }
+                }
+            }
+        }
+
+        for (int j = 0; j < jobTypeList.size(); j++) {
+            for(Task t : jobTypeList.get(j).getTaskList()) {
+                boolean isTaskAvaliable = false;
+                for(int i =0; i < stationList.size(); i++) {
+                    for (StationType stationType : stationList.get(i).getStationTypeList()) {
+                        if(t.getTaskID().equals(stationType.getTaskID())) {
+                            isTaskAvaliable = true;
+                        }
+                    }
+                }
+                if(!isTaskAvaliable) {
+                    if(jobTypeLines.getFirst().equals(jobTypeLines.getLast())) {
+                        System.out.print("Line " + jobTypeLines.getFirst() + " : ");
+                    } else {
+                        try {
+                            System.out.print("Line " + jobTypeLines.get(j+1) + " : ");
+                        } catch(IndexOutOfBoundsException e) {
+                            System.out.print("Line " + jobTypeLines.get(j-1) + " : ");
+                        }
+                    }
+                    escape = true;
+                    System.out.print(t.getTaskID() + " Task is not declared in stations. Change or add it." );
+                    System.out.println();
                 }
             }
         }
@@ -995,13 +1037,14 @@ public class ReadTextFile {
         System.out.println();
     }
 
+    // RETURN ERROR REPORTS
     public boolean getEscape() {return escape;}
 
     // OPEN FILE
-    public void openFile(String txt) {
+    private void openFile(String txt) {
         try {
             fileName = txt;
-            input = new Scanner(Paths.get("src/"+txt));
+            input = new Scanner(Paths.get(txt));
         } catch(IOException ioException) {
             System.err.println("Error opening file. Terminating.");
             System.out.println(ioException);
@@ -1010,7 +1053,7 @@ public class ReadTextFile {
     }
 
     // READ FILE
-    public static void readFile(int choice) {
+    private static void readFile(int choice) {
         try{
             switch (choice) {
                 // reads one by one
@@ -1036,7 +1079,7 @@ public class ReadTextFile {
         }
     }
 
-    //CLOSE FILE
+    // CLOSE FILE
     public static void closeFile() {
         if(input != null) {
             input.close();

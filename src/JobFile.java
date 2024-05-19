@@ -7,6 +7,8 @@ public class JobFile {
     private double completionTime;
     private Station currentStation;
 
+    public JobFile() {}
+
     public JobFile(String jobName, JobType jobTypeID, int startTime, int duration) {
         setJobName(jobName);
         setJobType(jobTypeID);
@@ -44,7 +46,6 @@ public class JobFile {
     public void incrementTaskIndex() {
         currentTaskIndex++;
     }
-
     public boolean isCompleted() {
         return currentTaskIndex >= getJobType().getTaskList().size();
     }

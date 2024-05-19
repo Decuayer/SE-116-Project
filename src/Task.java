@@ -2,11 +2,7 @@ public class Task extends TaskType{
     private TaskType taskType;
     private double size;
 
-    public Task() {
-        //Herhangi bir parametre girilmediği zaman uyarı verecek try catch.
-
-    }
-
+    public Task() {}
 
     public Task(TaskType taskType) {
         super(taskType.getTaskID(), taskType.getDefualtSize());
@@ -19,7 +15,6 @@ public class Task extends TaskType{
         }
     }
 
-
     public Task(TaskType taskType, double size) {
         super(taskType.getTaskID(), taskType.getDefualtSize());
         setSize(size);
@@ -29,16 +24,11 @@ public class Task extends TaskType{
         this.taskType = taskType;
     }
     public void setSize(double size) {
-        // size negatif mi değil mi kontrol edecek try catch.
-        // size variable type doğru mu kontrol eden  try catch.
         try {
-
             if (size < 0) {
                 throw new IllegalArgumentException("Error: (size) cannot be negative.");
             }
-
             this.size = size;
-
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
@@ -47,12 +37,10 @@ public class Task extends TaskType{
     }
 
     public TaskType getTaskType() {return taskType;}
-
     public double getSize() {
         if (size == 0) {
             return getDefualtSize();
         }
         return size;
     }
-
 }
